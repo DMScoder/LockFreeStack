@@ -1,3 +1,4 @@
+import java.util.ArrayList;
 import java.util.concurrent.atomic.AtomicInteger;
 
 /**
@@ -42,7 +43,6 @@ public class MAIN extends Thread {
     public void run() {
         for(int i=0;i<1000;i++)
             stack.push(i);
-
         threadsDone.incrementAndGet();
     }
 }

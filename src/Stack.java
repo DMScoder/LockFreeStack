@@ -1,3 +1,4 @@
+import java.util.ArrayList;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
 
@@ -14,6 +15,7 @@ public class Stack<T> {
     public Stack(){
         head = new AtomicReference<>();
         numOps = new AtomicInteger(0);
+        size = new AtomicInteger(0);
     }
 
     public boolean push(T x){
@@ -25,6 +27,7 @@ public class Stack<T> {
             n.next = oldTop;
 
             if(head.compareAndSet(oldTop,n)){
+                size.incrementAndGet();
                 numOps.incrementAndGet();
                 return true;
             }
@@ -40,14 +43,29 @@ public class Stack<T> {
             Node newHead = head.get().next;
 
             if(head.compareAndSet(oldHead,newHead)){
+                size.incrementAndGet();
                 numOps.incrementAndGet();
                 return oldHead.val;
             }
         }
     }
 
+    public int getSize(){
+        return size.get();
+    }
+
     public int getNumOps(){
         return numOps.get();
+    }
+
+    public ArrayList<Node> pregenerateNodes(){
+        ArrayList<Node> nodes = new ArrayList<>();
+
+        for(int i=0;i<1000;i++){
+            nodes.add(new Node((T) new Integer(0)));
+        }
+
+        return nodes;
     }
 
     class Node{
